@@ -1,0 +1,104 @@
+import random
+import re
+
+
+def rock_paper_scissors(matches):
+    player_wins = 0
+    cpu_wins = 0
+
+    for match in range(matches):
+        print_match_intro(match, matches)
+        player_input = player_choice()
+        cpu_input = cpu_hand_chooser()
+        player_wins, cpu_wins = face_off(player_input, cpu_input, player_wins, cpu_wins)
+        print_scoreboard(cpu_wins, player_wins)
+
+    print_ending_results(cpu_wins, player_wins)
+
+
+def print_match_intro(match, matches):
+    if match == matches-1:
+        print('It\'s time for the last match')
+    else:
+        print(f'It\'s time for the match number {match + 1}!')
+
+
+def print_ending_results(cpu_wins, player_wins):
+    if player_wins > cpu_wins:
+        print('The human has won!')
+    if player_wins < cpu_wins:
+        print('The CPU has won!')
+    if player_wins == cpu_wins:
+        print('We got no winners')
+
+
+def print_scoreboard(cpu_wins, player_wins):
+    print(f'----Scoreboard-----')
+    print('  Player  |   CPU   ')
+    print('----------|---------')
+    print(f'     {player_wins}    |    {cpu_wins}')
+    print('--------------------')
+
+
+def face_off(player_input, cpu_input, player_wins, cpu_wins):
+    # compare player and cpu hands, in this specific order
+
+    if player_input == 'r':  # rock
+        if cpu_input == 'r':  # rock x rock
+            print("draw")
+            return player_wins, cpu_wins
+        if cpu_input == 'p':  # rock x paper
+            print('CPU Won')
+            return player_wins, cpu_wins+1
+        if cpu_input == 's':  # rock x scissor
+            print('Player Won')
+            return player_wins+1, cpu_wins
+
+    if player_input == 'p':  # paper
+        if cpu_input == 'r':  # paper x rock
+            print('Player Won')
+            return player_wins + 1, cpu_wins
+        if cpu_input == 'p':  # paper x paper
+            print("draw")
+            return player_wins, cpu_wins
+        if cpu_input == 's':  # paper x scissor
+            print('CPU Won')
+            return player_wins, cpu_wins + 1
+
+    if player_input == 's':  # scissor
+        if cpu_input == 'r':  # scissor x rock
+            print('CPU Won')
+            return player_wins, cpu_wins + 1
+        if cpu_input == 'p':  # scissor x paper
+            print('Player Won')
+            return player_wins + 1, cpu_wins
+        if cpu_input == 's':  # scissor x scissor
+            print("draw")
+            return player_wins, cpu_wins
+
+
+def player_choice():
+    # uses RegEx to validade player input
+    re_pattern = re.compile('[rpsRPS]')
+
+    while True:
+        player_input = input('Choose one: [R]ock - [P]aper - [S]cissor\n')
+        is_valid_player_input = re_pattern.match(player_input)
+        if not is_valid_player_input:
+            print(f'what the heck is {player_input}???')
+        else:
+            print(f'Player showed: {player_input}')
+            break
+
+    return player_input.lower()
+
+
+def cpu_hand_chooser():
+    # just choose a random hand for CPU
+    cpu_choice_number = random.randrange(3)
+    hand = ['r', 'p', 's']
+    print(f'CPU showed: {hand[cpu_choice_number]}')
+    return hand[cpu_choice_number]
+
+
+rock_paper_scissors(3)
