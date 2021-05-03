@@ -17,7 +17,7 @@ def rock_paper_scissors(matches):
 
 
 def print_match_intro(match, matches):
-    if match == matches-1:
+    if match == matches - 1:
         print('It\'s time for the last match')
     else:
         print(f'It\'s time for the match number {match + 1}!')
@@ -42,39 +42,17 @@ def print_scoreboard(cpu_wins, player_wins):
 
 def face_off(player_input, cpu_input, player_wins, cpu_wins):
     # compare player and cpu hands, in this specific order
+    input_combination_list = ['rr', 'rp', 'rs',
+                              'pp', 'ps', 'pr',
+                              'ss', 'sr', 'sp']
+    output_combination_list = [['draw', 0, 0],
+                               ['CPU Won', 0, 1],
+                               ['Player Won', 1, 0]]
+    results_map = dict(zip(input_combination_list, output_combination_list*3))
 
-    if player_input == 'r':  # rock
-        if cpu_input == 'r':  # rock x rock
-            print("draw")
-            return player_wins, cpu_wins
-        if cpu_input == 'p':  # rock x paper
-            print('CPU Won')
-            return player_wins, cpu_wins+1
-        if cpu_input == 's':  # rock x scissor
-            print('Player Won')
-            return player_wins+1, cpu_wins
-
-    if player_input == 'p':  # paper
-        if cpu_input == 'r':  # paper x rock
-            print('Player Won')
-            return player_wins + 1, cpu_wins
-        if cpu_input == 'p':  # paper x paper
-            print("draw")
-            return player_wins, cpu_wins
-        if cpu_input == 's':  # paper x scissor
-            print('CPU Won')
-            return player_wins, cpu_wins + 1
-
-    if player_input == 's':  # scissor
-        if cpu_input == 'r':  # scissor x rock
-            print('CPU Won')
-            return player_wins, cpu_wins + 1
-        if cpu_input == 'p':  # scissor x paper
-            print('Player Won')
-            return player_wins + 1, cpu_wins
-        if cpu_input == 's':  # scissor x scissor
-            print("draw")
-            return player_wins, cpu_wins
+    print(results_map[player_input + cpu_input][0])
+    return player_wins + results_map[player_input + cpu_input][1], \
+           cpu_wins + results_map[player_input + cpu_input][2]
 
 
 def player_choice():
