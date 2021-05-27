@@ -61,7 +61,7 @@ def player_choice():
 
     while True:
         player_input = input('Choose one: [R]ock - [P]aper - [S]cissor\n')
-        is_valid_player_input = re_pattern.match(player_input)
+        is_valid_player_input = re_pattern.fullmatch(player_input)
         if not is_valid_player_input:
             print(f'what the heck is {player_input}???')
         else:
